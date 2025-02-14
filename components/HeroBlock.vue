@@ -2,31 +2,31 @@
 import type { SanityDocument } from "@sanity/client";
 import imageUrlBuilder from "@sanity/image-url";
 import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
+import { PortableText } from '@portabletext/vue';
+import MoviePosts from "./MoviePosts.vue";
 
 const pageData = useState<any>()
 const today = useState<any>();
 
 await callOnce(async () => {
 
-    const POSTS_QUERY = groq`*[_type == "page"][0]{
+    const POSTS_QUERY = groq`*[_type == "page" && _id == "singleton-homepage"][0] {
         title,
         tagline,
         subtitle,
         date,
-        pageBuilder[] {
-        ...,
-            "post": *[_type == "post"][0] {
-                title,
-                tageline,
-                    "directors": directorList[]-> {
-                        name,
-                        image
-                    },
-                date,
-                image,
-                content
-            }
-        }
+        "post": pageBuilder[]-> {
+            title,
+            tageline,
+                "directors": directorList[]-> {
+                    name,
+                    image
+                },
+            date,
+            image,
+            content
+        },
+        aboutSection
       }`;
 
     const { data, error } = await useSanityQuery<SanityDocument[]>(POSTS_QUERY);
@@ -52,18 +52,18 @@ const urlFor = (source: SanityImageSource) => projectId && dataset ? imageUrlBui
         <h3 class="text-white text-3xl leading-relaxed font-black uppercase block text-center">{{ pageData.subtitle }}</h3>
         <p class="text-white text-lg py-2 my-4 border-y border-white/20 border-solid block w-[200px] mx-auto text-center">{{ pageData.date }}</p>
         <div 
-        v-if="pageData.pageBuilder.length > 0"
-        v-for="block in pageData.pageBuilder" :key="block.post?._id"
+        v-if="pageData.post.length > 0"
+        v-for="block in pageData.post" :key="block?._id"
         >
-            <h4 class="text-white text-9xl font-black uppercase block text-center">{{  block.post?.title  }}</h4>
+            <h4 class="text-white text-9xl font-black uppercase block text-center">{{  block?.title  }}</h4>
             <div class="block w-full flex items-center justify-center my-20">
                 <div 
-                    v-if="block.post?.directors.length > 0"
-                    v-for="direct in block.post?.directors" :key="direct?._id"
+                    v-if="block?.directors.length > 0"
+                    v-for="direct in block?.directors" :key="direct?._id"
                     class="flex items-center"
                 >
                     <div
-                        class="text-white w-[75px] h-[75px] rounded-full !bg-cover"
+                        class="text-white w-[50px] h-[50px] rounded-full !bg-cover grayscale"
                         :style="{
                             background : `url(${urlFor(direct.image) ? urlFor(direct.image)?.url() : 'https://placehold.co/200'}) center center no-repeat`
                         }"
@@ -72,12 +72,15 @@ const urlFor = (source: SanityImageSource) => projectId && dataset ? imageUrlBui
                 </div>
             </div>
             <div 
-            class="w-3/4 mx-auto !bg-cover aspect-video rounded-lg overflow-hidden bg-white"
+            class="w-2/3 mx-auto !bg-cover aspect-video rounded-lg overflow-hidden bg-white"
             :style="{
-                background : `url(${urlFor(block.post?.image) ? urlFor(block.post?.image)?.url() : 'https://placehold.co/1920x1080'}) center center no-repeat`
+                background : `url(${urlFor(block?.image) ? urlFor(block?.image)?.url() : 'https://placehold.co/1920x1080'}) center center no-repeat`
             }"
             ></div>
         </div>
+    </div>
+    <div class="container mx-auto my-80">
+        <MoviePosts />
     </div>
 </div>
 </template>

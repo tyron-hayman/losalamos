@@ -12,6 +12,7 @@ console.log(userProfileImage)
             L0s-4lamos
         </a>
         <div class="flex items-center gap-10">
+            <a href="#" class="text-white text-lg capitalize">Login</a>
             <a href="#" class="text-white text-lg border border-white rounded-lg border-solid py-2 px-5 hover:bg-white hover:text-black transition-all duration-500">
                 Submit a site
             </a>
