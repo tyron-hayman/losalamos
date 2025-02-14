@@ -1,6 +1,7 @@
-# Nuxt Minimal Starter
+# Los4lamos
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Discover the art of visual storytelling with our site, where we showcase the most breathtaking cinematography from film history. Explore stunning compositions, masterful lighting, and innovative camera work that define cinematic excellence. Powered by AI, our site provides detailed insights into each film’s aesthetic, techniques, and creative minds, offering a rich and immersive experience for cinephiles and filmmakers alike.
+
 
 ## Setup
 
