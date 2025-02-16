@@ -79,8 +79,5 @@ const urlFor = (source: SanityImageSource) => projectId && dataset ? imageUrlBui
             ></div>
         </div>
     </div>
-    <div class="container mx-auto my-80">
-        <MoviePosts />
-    </div>
 </div>
 </template>

@@ -1,8 +1,4 @@
 <script setup lang="ts">
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-const userProfileImage = useState<any | string>()
-
-console.log(userProfileImage)
 </script>
 
 <template>
@@ -13,12 +9,7 @@ console.log(userProfileImage)
         </a>
         <div class="flex items-center gap-10">
             <a href="#" class="text-white text-lg capitalize">Login</a>
-            <a href="#" class="text-white text-lg border border-white rounded-lg border-solid py-2 px-5 hover:bg-white hover:text-black transition-all duration-500">
-                Submit a site
-            </a>
-            <a href="#" class="text-white text-xl">
-                <font-awesome icon="bars-staggered" />
-            </a>
+            <a href="#" class="text-white text-lg capitalize">Explore</a>
         </div>
       </div>
     </div>
