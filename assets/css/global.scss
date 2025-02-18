@@ -60,3 +60,10 @@ body {
     font-family: "DM Sans", serif;
     background: v.$black;
 }
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+}

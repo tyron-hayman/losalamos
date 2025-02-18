@@ -61,4 +61,11 @@ table {
 body {
   font-family: "DM Sans", serif;
   background: #000000;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+  outline: none;
 }/*# sourceMappingURL=global.css.map */

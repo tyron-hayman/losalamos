@@ -14,7 +14,6 @@ await callOnce(async () => {
 
     const { data, error } = await useSanityQuery<SanityDocument[]>(POSTS_QUERY);
     pageData.value = data
-    console.log(data)
 })
 
 const { projectId, dataset } = useSanity().client.config();

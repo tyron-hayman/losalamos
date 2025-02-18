@@ -1,6 +1,11 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
+  runtimeConfig: {
+    public: {
+      gemini_api: process.env.gemini_api,
+    }
+  },
   modules: ['@nuxtjs/tailwindcss', 'shadcn-nuxt', '@nuxtjs/sanity', ['@nuxtjs/google-fonts', {
     families : {
       'DM+Sans' : {

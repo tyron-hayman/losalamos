@@ -16,6 +16,7 @@ await callOnce(async () => {
         subtitle,
         date,
         "post": pageBuilder[]-> {
+            _id,
             title,
             tageline,
                 "directors": directorList[]-> {
@@ -32,11 +33,14 @@ await callOnce(async () => {
     const { data, error } = await useSanityQuery<SanityDocument[]>(POSTS_QUERY);
     pageData.value = data
     today.value = new Date();
-    console.log(data)
 })
 
 const { projectId, dataset } = useSanity().client.config();
 const urlFor = (source: SanityImageSource) => projectId && dataset ? imageUrlBuilder({ projectId, dataset }).image(source) : null;
+
+const openMovie = (event : MouseEvent, id : string ) => {
+    navigateTo(`/movie/${id}`);
+}
 
 </script>
 
@@ -71,8 +75,9 @@ const urlFor = (source: SanityImageSource) => projectId && dataset ? imageUrlBui
                     <p class="text-gray-400 text-md capitalize ml-4 mr-8">{{ direct.name }}</p>
                 </div>
             </div>
-            <div 
-            class="w-2/3 mx-auto !bg-cover aspect-video rounded-lg overflow-hidden bg-white"
+            <div
+            @click="(event) => openMovie(event, block?._id)"
+            class="w-2/3 mx-auto !bg-cover aspect-video rounded-lg overflow-hidden bg-white cursor-pointer"
             :style="{
                 background : `url(${urlFor(block?.image) ? urlFor(block?.image)?.url() : 'https://placehold.co/1920x1080'}) center center no-repeat`
             }"
