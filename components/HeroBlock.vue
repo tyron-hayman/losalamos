@@ -2,15 +2,14 @@
 import type { SanityDocument } from "@sanity/client";
 import imageUrlBuilder from "@sanity/image-url";
 import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
-import { PortableText } from '@portabletext/vue';
+import { PortableText } from "@portabletext/vue";
 import MoviePosts from "./MoviePosts.vue";
 
-const pageData = useState<any>()
+const pageData = useState<any>();
 const today = useState<any>();
 
 await callOnce(async () => {
-
-    const POSTS_QUERY = groq`*[_type == "page" && _id == "singleton-homepage"][0] {
+  const POSTS_QUERY = groq`*[_type == "page" && _id == "singleton-homepage"][0] {
         title,
         tagline,
         subtitle,
@@ -30,59 +29,94 @@ await callOnce(async () => {
         aboutSection
       }`;
 
-    const { data, error } = await useSanityQuery<SanityDocument[]>(POSTS_QUERY);
-    pageData.value = data
-    today.value = new Date();
-})
+  const { data, error } = await useSanityQuery<SanityDocument[]>(POSTS_QUERY);
+  pageData.value = data;
+  today.value = new Date();
+});
 
 const { projectId, dataset } = useSanity().client.config();
-const urlFor = (source: SanityImageSource) => projectId && dataset ? imageUrlBuilder({ projectId, dataset }).image(source) : null;
+const urlFor = (source: SanityImageSource) =>
+  projectId && dataset
+    ? imageUrlBuilder({ projectId, dataset }).image(source)
+    : null;
 
-const openMovie = (event : MouseEvent, id : string ) => {
-    navigateTo(`/movie/${id}`);
-}
-
+const openMovie = (event: MouseEvent, id: string) => {
+  navigateTo(`/movie/${id}`);
+};
 </script>
 
 <template>
-<div class="w-full relative">
-    <div v-if="pageData" class="h-[90vh] w-full flex items-center justify-center">
-        <div>
-            <h2 class="text-white text-[10vw] font-black uppercase block text-center">{{ pageData.title }}</h2>
-            <h3 class="text-white text-4xl leading-5xl font-normal block text-center mt-10">{{ pageData.tagline }}</h3>
-        </div>
+  <div class="w-full relative">
+    <div
+      v-if="pageData"
+      class="h-[90vh] w-full flex items-center justify-center"
+    >
+      <div>
+        <h2
+          class="text-white text-[10vw] font-black uppercase block text-center"
+        >
+          {{ pageData.title }}
+        </h2>
+        <h3
+          class="text-white text-4xl leading-5xl font-normal block text-center mt-10"
+        >
+          {{ pageData.tagline }}
+        </h3>
+      </div>
     </div>
     <div class="container mx-auto">
-        <h3 class="text-white text-3xl leading-relaxed font-black uppercase block text-center">{{ pageData.subtitle }}</h3>
-        <p class="text-white text-lg py-2 my-4 border-y border-white/20 border-solid block w-[200px] mx-auto text-center">{{ pageData.date }}</p>
-        <div 
+      <h3
+        class="text-white text-3xl leading-relaxed font-black uppercase block text-center"
+      >
+        {{ pageData.subtitle }}
+      </h3>
+      <p
+        class="text-white text-lg py-2 my-4 border-y border-white/20 border-solid block w-[200px] mx-auto text-center"
+      >
+        {{ pageData.date }}
+      </p>
+      <div
         v-if="pageData.post.length > 0"
-        v-for="block in pageData.post" :key="block?._id"
-        >
-            <h4 class="text-white text-9xl font-black uppercase block text-center">{{  block?.title  }}</h4>
-            <div class="block w-full flex items-center justify-center my-20">
-                <div 
-                    v-if="block?.directors.length > 0"
-                    v-for="direct in block?.directors" :key="direct?._id"
-                    class="flex items-center"
-                >
-                    <div
-                        class="text-white w-[50px] h-[50px] rounded-full !bg-cover grayscale"
-                        :style="{
-                            background : `url(${urlFor(direct.image) ? urlFor(direct.image)?.url() : 'https://placehold.co/200'}) center center no-repeat`
-                        }"
-                    ></div>
-                    <p class="text-gray-400 text-md capitalize ml-4 mr-8">{{ direct.name }}</p>
-                </div>
-            </div>
+        v-for="block in pageData.post"
+        :key="block?._id"
+      >
+        <h4 class="text-white text-9xl font-black uppercase block text-center">
+          {{ block?.title }}
+        </h4>
+        <div class="block w-full flex items-center justify-center my-20">
+          <div
+            v-if="block?.directors.length > 0"
+            v-for="direct in block?.directors"
+            :key="direct?._id"
+            class="flex items-center"
+          >
             <div
-            @click="(event) => openMovie(event, block?._id)"
-            class="w-2/3 mx-auto !bg-cover aspect-video rounded-lg overflow-hidden bg-white cursor-pointer"
-            :style="{
-                background : `url(${urlFor(block?.image) ? urlFor(block?.image)?.url() : 'https://placehold.co/1920x1080'}) center center no-repeat`
-            }"
+              class="text-white w-[50px] h-[50px] rounded-full !bg-cover grayscale"
+              :style="{
+                background: `url(${
+                  urlFor(direct.image)
+                    ? urlFor(direct.image)?.url()
+                    : 'https://placehold.co/200'
+                }) center center no-repeat`,
+              }"
             ></div>
+            <p class="text-gray-400 text-md capitalize ml-4 mr-8">
+              {{ direct.name }}
+            </p>
+          </div>
         </div>
+        <div
+          @click="(event) => openMovie(event, block?._id)"
+          class="w-2/3 mx-auto !bg-cover aspect-video rounded-lg overflow-hidden bg-white cursor-pointer"
+          :style="{
+            background: `url(${
+              urlFor(block?.image)
+                ? urlFor(block?.image)?.url()
+                : 'https://placehold.co/1920x1080'
+            }) center center no-repeat`,
+          }"
+        ></div>
+      </div>
     </div>
-</div>
+  </div>
 </template>
