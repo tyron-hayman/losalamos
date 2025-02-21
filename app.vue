@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import GlobalNav from "./components/GlobalNav.vue";
-import Lenis from "lenis";
 import { animate } from "motion";
 import { ref } from "vue";
 
@@ -15,15 +14,7 @@ async function onLeave(el: any, onComplete: any) {
   onComplete();
 }
 
-onMounted(() => {
-  // Initialize Lenis
-  const lenis = new Lenis({
-    autoRaf: true,
-  });
-
-  // Listen for the scroll event and log the event data
-  lenis.on("scroll", (e) => {});
-});
+onMounted(() => {});
 </script>
 
 <template>

@@ -3,6 +3,8 @@ import { ref } from "vue";
 import type { SanityDocument } from "@sanity/client";
 import imageUrlBuilder from "@sanity/image-url";
 import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
+import Lenis from "lenis";
+import { animate } from "motion";
 
 const pageData = useState<any>();
 const responses = useState<any>("response-array", () => []);
@@ -15,6 +17,16 @@ const starterPromps: any = [
   "Who was responsible for color grading?",
   "What lens was used for this scene?",
 ];
+let lenis: any;
+
+onMounted(() => {
+  // Initialize Lenis
+  lenis = new Lenis({
+    autoRaf: true,
+  });
+  // Listen for the scroll event and log the event data
+  lenis.on("scroll", (e: any) => {});
+});
 
 await callOnce(async () => {
   const POSTS_QUERY = groq`*[_type == "post" && _id == "${route.params.id}"] {
@@ -45,7 +57,7 @@ const handleGemini = async (event: Event) => {
 
   responses.value.push({
     position: "justify-self-start",
-    color: "bg-blue-600",
+    color: "bg-amber-600",
     width: "w-4/12",
     response: prompt.value,
   });
@@ -70,7 +82,7 @@ const handleGemini = async (event: Event) => {
 
     responses.value.push({
       position: "justify-self-end",
-      color: "bg-black",
+      color: "bg-zinc-950",
       width: "w-7/12",
       response: response.candidates[0].content.parts[0].text
         .replace(/\*\*(.*?)\*\*/g, '<strong class="font-black">$1</strong>')
@@ -85,9 +97,23 @@ const handleGemini = async (event: Event) => {
     prompt.value = "";
   } catch (error) {
     alert(`There was an error: ${error}`);
+  } finally {
+    let body = document.body,
+      html = document.documentElement;
+    let targetScroll = Math.max(
+      body.scrollHeight,
+      body.offsetHeight,
+      html.clientHeight,
+      html.scrollHeight,
+      html.offsetHeight,
+      10000
+    );
+    lenis.scrollTo(targetScroll);
   }
   return false;
 };
+
+
 </script>
 
 <template>
@@ -101,14 +127,14 @@ const handleGemini = async (event: Event) => {
         >
           <h2
             :class="`w-2/3 text-zinc-700 ${
-              responses.length > 0 ? 'text-4xl' : 'text-[7rem]'
-            } leading-[1] font-black block transition-all duration-500 mb-5`"
+              responses.length > 0 ? 'text-4xl' : 'text-[6rem]'
+            } leading-[1] font-black block transition-all duration-500 uppercase`"
           >
             {{ pageData[0].title }}
           </h2>
           <h3
-            :class="`w-2/3 text-white ${
-              responses.length > 0 ? 'text-2xl' : 'text-5xl'
+            :class="`w-2/3 text-amber-500 ${
+              responses.length > 0 ? 'text-xl' : 'text-4xl'
             } leading-[1] font-black block transition-all duration-500`"
           >
             {{ pageData[0].tagline }}
@@ -140,35 +166,37 @@ const handleGemini = async (event: Event) => {
           </div>
           <div
             :class="`w-full flex gap-5 items-center justify-start ${
-              prompt ? 'hidden' : null
+              responses.length > 0 ? 'hidden' : null
             }`"
           >
             <div
-              class="w-1/4 p-10 bg-zinc-800 rounded-lg"
+              class="w-1/4 p-10 bg-zinc-900 rounded-lg"
               v-for="(starter, index) in starterPromps"
               :key="`box${index}`"
             >
-              <p class="text-white text-md leading-relaxed">{{ starter }}</p>
+              <p class="text-white text-lg leading-relaxed">{{ starter }}</p>
             </div>
           </div>
         </div>
-        <div ref="gemResponseBox" :class="`w-full pt-10 pb-40 }`">
-          <div
-            v-if="responses.length > 0"
-            v-for="response in responses"
-            :key="response.position"
-            :class="`w-full grid mb-10`"
-          >
-            <div
-              :class="`${response.width} ${response.color} p-5 rounded-3xl ${response.position} border-white/10 border border-solid`"
-            >
-              <p
-                class="text-white text-xl leading-relaxed font-normal"
-                v-html="response.response"
-              ></p>
-            </div>
-          </div>
+        <Transition :css="false">
+        <div ref="gemResponseBox" :class="`gemResponseBox w-full pt-4 pb-40 }`">
+              <div
+                v-if="responses.length > 0"
+                v-for="response in responses"
+                :key="response.position"
+                :class="`w-full grid mb-10`"
+              >
+                <div
+                  :class="`${response.width} ${response.color} p-5 rounded-3xl ${response.position} border-white/5 border border-solid`"
+                >
+                  <p
+                    class="text-white text-lg leading-relaxed font-normal"
+                    v-html="response.response"
+                  ></p>
+                </div>
+              </div>
         </div>
+      </Transition>
       </div>
     </div>
     <div class="fixed inset-x-0 bottom-0 z-[5]">

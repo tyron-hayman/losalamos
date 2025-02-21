@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div class="absolute top-0 inset-x-0 z-[100]">
+  <div class="fixed top-0 inset-x-0 z-[100] bg-gradient-to-b from-zinc-950 from-60% to-black/0">
     <div class="container mx-auto py-10 flex items-center justify-between">
       <a
         href="/"
