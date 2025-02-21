@@ -97,7 +97,7 @@ const handleGemini = async (event: Event) => {
     >
       <div class="w-full">
         <div
-          class="w-full sticky top-0 pt-[100px] pb-5 bg-gradient-to-b from-black from-80% to-black/0"
+          class="w-full sticky top-0 pt-[100px] pb-5 bg-gradient-to-b from-zinc-950 from-80% to-black/0"
         >
           <h2
             :class="`w-2/3 text-zinc-700 ${
@@ -197,5 +197,4 @@ const handleGemini = async (event: Event) => {
       </div>
     </div>
   </div>
-  <div v-else>Loading</div>
 </template>
