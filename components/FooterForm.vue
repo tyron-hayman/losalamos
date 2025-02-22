@@ -23,15 +23,15 @@ await callOnce(async () => {
       v-if="pageData"
       class="container mx-auto flex flex-wrap items-start justify-between"
     >
-      <h2 class="block w-full text-8xl font-bold capitilize text-white mb-32">
+      <h2 class="block w-full text-5xl md:text-8xl font-bold capitilize text-white mb-32">
         {{ pageData.title }}
       </h2>
-      <div class="w-6/12">
+      <div class="w-full md:w-6/12 mb-10 md:mb-0">
         <p class="text-3xl font-normal leading-relaxed text-white">
           {{ pageData.conent }}
         </p>
       </div>
-      <div class="w-5/12">
+      <div class="w-full md:w-5/12">
         <h3 class="text-5xl font-bold captilize mb-5 text-white">
           {{ pageData.formTitle }}
         </h3>

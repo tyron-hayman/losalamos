@@ -80,7 +80,7 @@ const openMovie = (event: MouseEvent, id: string) => {
         v-for="block in pageData.post"
         :key="block?._id"
       >
-        <h4 class="text-white text-9xl font-black uppercase block text-center">
+        <h4 class="text-white text-4xl md:text-9xl font-black uppercase block text-center">
           {{ block?.title }}
         </h4>
         <div class="block w-full flex items-center justify-center my-20">
@@ -88,7 +88,7 @@ const openMovie = (event: MouseEvent, id: string) => {
             v-if="block?.directors.length > 0"
             v-for="direct in block?.directors"
             :key="direct?._id"
-            class="flex items-center"
+            class="flex items-center w-full md:w-auto"
           >
             <div
               class="text-white w-[50px] h-[50px] rounded-full !bg-cover grayscale"
@@ -107,7 +107,7 @@ const openMovie = (event: MouseEvent, id: string) => {
         </div>
         <div
           @click="(event) => openMovie(event, block?._id)"
-          class="w-2/3 mx-auto !bg-cover aspect-video rounded-lg overflow-hidden bg-white cursor-pointer"
+          class="w-full md:w-2/3 mx-auto !bg-cover aspect-video rounded-lg overflow-hidden bg-white cursor-pointer"
           :style="{
             background: `url(${
               urlFor(block?.image)

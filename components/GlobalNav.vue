@@ -14,7 +14,7 @@
         >
       </a>
       <div class="flex items-center gap-10">
-        <a href="#" class="text-white text-lg capitalize font-bold">Explore</a>
+        <NuxtLink class="text-white text-lg capitalize font-bold" to="/explore">Explore</NuxtLink>
       </div>
     </div>
   </div>

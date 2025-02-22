@@ -57,8 +57,8 @@ const handleGemini = async (event: Event) => {
 
   responses.value.push({
     position: "justify-self-start",
-    color: "bg-amber-600",
-    width: "w-4/12",
+    color: "bg-blue-500",
+    width: "w-full md:w-4/12",
     response: prompt.value,
   });
 
@@ -83,7 +83,7 @@ const handleGemini = async (event: Event) => {
     responses.value.push({
       position: "justify-self-end",
       color: "bg-zinc-950",
-      width: "w-7/12",
+      width: "w-full md:w-7/12",
       response: response.candidates[0].content.parts[0].text
         .replace(/\*\*(.*?)\*\*/g, '<strong class="font-black">$1</strong>')
         .replace(/\*(.*?)\*/g, '<em class="italic font-bold">$1</em>')
@@ -123,23 +123,23 @@ const handleGemini = async (event: Event) => {
     >
       <div class="w-full">
         <div
-          class="w-full sticky top-0 pt-[100px] pb-5 bg-gradient-to-b from-zinc-950 from-80% to-black/0"
+          class="w-full sticky top-0 pt-[100px] pb-10 bg-gradient-to-b from-zinc-950 from-85% to-black/0"
         >
           <h2
-            :class="`w-2/3 text-zinc-700 ${
-              responses.length > 0 ? 'text-4xl' : 'text-[6rem]'
+            :class="`w-full md:w-2/3 text-zinc-700 ${
+              responses.length > 0 ? 'text-xl' : 'text-3xl md:text-6xl'
             } leading-[1] font-black block transition-all duration-500 uppercase`"
           >
             {{ pageData[0].title }}
           </h2>
           <h3
-            :class="`w-2/3 text-amber-500 ${
-              responses.length > 0 ? 'text-xl' : 'text-4xl'
+            :class="`w-full md:w-2/3 text-white ${
+              responses.length > 0 ? 'text-4xl' : 'text-6xl md:text-8xl'
             } leading-[1] font-black block transition-all duration-500`"
           >
             {{ pageData[0].tagline }}
           </h3>
-          <div class="block w-1/2 flex items-center justify-start my-5">
+          <div class="block w-full md:w-1/2 flex items-center justify-start my-5">
             <div
               v-if="pageData[0]?.directors.length > 0"
               v-for="direct in pageData[0]?.directors"
@@ -147,7 +147,7 @@ const handleGemini = async (event: Event) => {
               class="flex items-center"
             >
               <div
-                class="text-white w-[50px] h-[50px] rounded-full !bg-cover grayscale"
+                class="text-white w-[50px] h-[50px] rounded-full !bg-cover grayscale mr-5 md:mr-0"
                 :style="{
                   background: `url(${
                     urlFor(direct.image)
@@ -156,30 +156,17 @@ const handleGemini = async (event: Event) => {
                   }) center center no-repeat`,
                 }"
               ></div>
-              <p class="text-gray-400 text-md capitalize ml-4 mr-8">
+              <p class="hidden md:block text-gray-400 text-md capitalize ml-4 mr-8">
                 {{ direct.name }}
               </p>
             </div>
-            <p class="text-md bg-zinc-800 text-zinc-500 rounded-lg p-2">
+            <p class="grow text-md bg-zinc-800 text-zinc-500 rounded-lg p-2">
               Responses may contain errors.
             </p>
           </div>
-          <div
-            :class="`w-full flex gap-5 items-center justify-start ${
-              responses.length > 0 ? 'hidden' : null
-            }`"
-          >
-            <div
-              class="w-1/4 p-10 bg-zinc-900 rounded-lg"
-              v-for="(starter, index) in starterPromps"
-              :key="`box${index}`"
-            >
-              <p class="text-white text-lg leading-relaxed">{{ starter }}</p>
-            </div>
-          </div>
         </div>
         <Transition :css="false">
-        <div ref="gemResponseBox" :class="`gemResponseBox w-full pt-4 pb-40 }`">
+        <div ref="gemResponseBox" :class="`gemResponseBox w-full pt-4 ${responses.length > 0 ? 'pb-40' : 'pb-28'} }`">
               <div
                 v-if="responses.length > 0"
                 v-for="response in responses"
@@ -200,13 +187,13 @@ const handleGemini = async (event: Event) => {
       </div>
     </div>
     <div class="fixed inset-x-0 bottom-0 z-[5]">
-      <div class="bg-gradient-to-t from-black from-70% to-black/0 w-full">
+      <div class="bg-gradient-to-t from-zinc-950 from-70% to-black/0 w-full">
         <form
           class="container mx-auto p-10"
           @submit="(event) => handleGemini(event)"
         >
           <div
-            class="rounded-3xl bg-zinc-900 overflow-hidden flex justify-between w-full items-center"
+            class="rounded-3xl bg-gray-800 overflow-hidden flex justify-between w-full items-center"
           >
             <input
               v-model="prompt"

@@ -13,6 +13,9 @@
   "framework": "nuxt",
   "aliases": {
     "components": "@/losalamos/components",
-    "utils": "@/losalamos/lib/utils"
+    "utils": "@/losalamos/lib/utils",
+    "ui": "@/losalamos/components/ui",
+    "lib": "@/losalamos/lib",
+    "composables": "@/losalamos/composables"
   }
 }
