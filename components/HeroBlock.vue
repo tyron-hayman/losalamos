@@ -2,8 +2,7 @@
 import type { SanityDocument } from "@sanity/client";
 import imageUrlBuilder from "@sanity/image-url";
 import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
-import { PortableText } from "@portabletext/vue";
-import MoviePosts from "./MoviePosts.vue";
+import AnimatedHeader from "./AnimatedHeader.vue";
 
 const pageData = useState<any>();
 const today = useState<any>();
@@ -52,11 +51,7 @@ const openMovie = (event: MouseEvent, id: string) => {
       class="h-[90vh] w-full flex items-center justify-center"
     >
       <div>
-        <h2
-          class="text-white text-[10vw] font-black uppercase block text-center"
-        >
-          {{ pageData.title }}
-        </h2>
+        <AnimatedHeader :title="pageData.title" />
         <h3
           class="text-white text-4xl leading-5xl font-normal block text-center mt-10"
         >

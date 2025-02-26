@@ -5,6 +5,8 @@ import imageUrlBuilder from "@sanity/image-url";
 import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import Lenis from "lenis";
 import { animate } from "motion";
+import Loader from "~/components/Loader.vue";
+import { PortableText } from '@portabletext/vue'
 
 const pageData = useState<any>();
 const responses = useState<any>("response-array", () => []);
@@ -31,6 +33,7 @@ onMounted(() => {
 await callOnce(async () => {
   const POSTS_QUERY = groq`*[_type == "post" && _id == "${route.params.id}"] {
         title,
+        content,
         image,
         release,
         tagline,
@@ -119,97 +122,50 @@ const handleGemini = async (event: Event) => {
 <template>
   <div v-if="pageData">
     <div
-      class="relative container min-h-screen mx-auto items-end flex justify-between flex-wrap"
+      :class="`container mx-auto relative pt-40`"
     >
-      <div class="w-full">
-        <div
-          class="w-full sticky top-0 pt-[100px] pb-10 bg-gradient-to-b from-zinc-950 from-85% to-black/0"
-        >
-          <h2
-            :class="`w-full md:w-2/3 text-zinc-700 ${
-              responses.length > 0 ? 'text-xl' : 'text-3xl md:text-6xl'
-            } leading-[1] font-black block transition-all duration-500 uppercase`"
-          >
-            {{ pageData[0].title }}
-          </h2>
-          <h3
-            :class="`w-full md:w-2/3 text-white ${
-              responses.length > 0 ? 'text-4xl' : 'text-6xl md:text-8xl'
-            } leading-[1] font-black block transition-all duration-500`"
-          >
-            {{ pageData[0].tagline }}
-          </h3>
-          <div class="block w-full md:w-1/2 flex items-center justify-start my-5">
-            <div
-              v-if="pageData[0]?.directors.length > 0"
-              v-for="direct in pageData[0]?.directors"
-              :key="direct?._id"
-              class="flex items-center"
-            >
-              <div
-                class="text-white w-[50px] h-[50px] rounded-full !bg-cover grayscale mr-5 md:mr-0"
-                :style="{
-                  background: `url(${
-                    urlFor(direct.image)
-                      ? urlFor(direct.image)?.url()
-                      : 'https://placehold.co/200'
-                  }) center center no-repeat`,
-                }"
-              ></div>
-              <p class="hidden md:block text-gray-400 text-md capitalize ml-4 mr-8">
-                {{ direct.name }}
-              </p>
-            </div>
-            <p class="grow text-md bg-zinc-800 text-zinc-500 rounded-lg p-2">
-              Responses may contain errors.
-            </p>
-          </div>
-        </div>
-        <Transition :css="false">
-        <div ref="gemResponseBox" :class="`gemResponseBox w-full pt-4 ${responses.length > 0 ? 'pb-40' : 'pb-28'} }`">
-              <div
-                v-if="responses.length > 0"
-                v-for="response in responses"
-                :key="response.position"
-                :class="`w-full grid mb-10`"
-              >
-                <div
-                  :class="`${response.width} ${response.color} p-5 rounded-3xl ${response.position} border-white/5 border border-solid`"
-                >
-                  <p
-                    class="text-white text-lg leading-relaxed font-normal"
-                    v-html="response.response"
-                  ></p>
-                </div>
-              </div>
-        </div>
-      </Transition>
+      <h1 class="text-5xl text-white font-normal">{{ pageData[0]?.title }}</h1>
+      <h2 class="text-[13vw] leading-[12vw] text-rose-600 mb-40 font-bold capitalize">{{ pageData[0]?.tagline }}</h2>
+
+      <div
+        :class="`w-2/3 mx-auto aspect-video z-[1] !bg-cover`"
+        :style="{
+          background: `url(${
+              urlFor(pageData[0]?.image)
+                ? urlFor(pageData[0]?.image)?.url()
+                : 'https://placehold.co/1920x1080'
+            }) center center no-repeat`,
+        }"
+      ></div>
+      <div class="textBlock w-2/3 mx-auto my-40">
+        <PortableText :value="pageData[0]?.content" />
       </div>
     </div>
-    <div class="fixed inset-x-0 bottom-0 z-[5]">
-      <div class="bg-gradient-to-t from-zinc-950 from-70% to-black/0 w-full">
+      <div class="fixed z-index-[1] inset-x-0 bottom-10 flex justify-center">
         <form
-          class="container mx-auto p-10"
-          @submit="(event) => handleGemini(event)"
+          @submit="handleGemini"
+          class="w-full md:w-[500px] bg-zinc-950 p-10 flex flex-col"
         >
-          <div
-            class="rounded-3xl bg-gray-800 overflow-hidden flex justify-between w-full items-center"
+          <label for="prompt" class="text-white text-lg mb-5">
+            {{ starterPromps[Math.floor(Math.random() * starterPromps.length)] }}
+          </label>
+          <input
+            v-model="prompt"
+            type="text"
+            id="prompt"
+            name="prompt"
+            class="bg-zinc-950 text-white border-b-2 border-white p-2"
+          />
+          <button
+            type="submit"
+            class="bg-blue-500 text-white p-2 mt-5"
           >
-            <input
-              v-model="prompt"
-              type="text"
-              class="w-full block p-5 text-xl text-white bg-transparent border-none"
-              :placeholder="`What would you like to learn about ${pageData[0].title}?`"
-              :disabled="loader ? true : false"
-            />
-            <span
-              :class="`${
-                loader ? 'opacity-100' : 'opacity-0'
-              } gem_loader transition-all duration-500 mr-10`"
-            ></span>
-          </div>
+            Submit
+          </button>
         </form>
       </div>
-    </div>
   </div>
+  <Loader v-else />
+  <FooterForm />
+  <GlobalFooter />
 </template>

@@ -150,6 +150,39 @@ button:focus {
   outline: none;
 }
 
+.textBlock {
+  h3 {
+    color: v.$white;
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+  }
+  p {
+    color: v.$white;
+    font-size: 1.875rem;
+    line-height: 1.625;
+    margin-bottom: 40px;
+  }
+  strong {
+    font-weight: 900;
+  }
+  ul, ol {
+    margin-bottom: 40px;
+    padding-left: 30px;
+    li {
+      list-style: circle;
+      color: v.$white;
+      font-size: 1.875rem;
+      line-height: 1.625;
+      padding-bottom: 10px;
+    }
+  }
+  ol {
+    li {
+      list-style: decimal;
+    }
+  }
+}
+
 .gem_loader {
   width: 4px;
   height: 20px;

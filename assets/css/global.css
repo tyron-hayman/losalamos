@@ -152,6 +152,35 @@ button:focus {
   outline: none;
 }
 
+.textBlock h3 {
+  color: #ffffff;
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+.textBlock p {
+  color: #ffffff;
+  font-size: 1.875rem;
+  line-height: 1.625;
+  margin-bottom: 40px;
+}
+.textBlock strong {
+  font-weight: 900;
+}
+.textBlock ul, .textBlock ol {
+  margin-bottom: 40px;
+  padding-left: 30px;
+}
+.textBlock ul li, .textBlock ol li {
+  list-style: circle;
+  color: #ffffff;
+  font-size: 1.875rem;
+  line-height: 1.625;
+  padding-bottom: 10px;
+}
+.textBlock ol li {
+  list-style: decimal;
+}
+
 .gem_loader {
   width: 4px;
   height: 20px;
