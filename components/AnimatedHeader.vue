@@ -1,52 +1,65 @@
 <script setup lang="ts">
-import { animate } from 'motion';
-import type { AnimationSequence } from 'motion';
-import { defineProps } from 'vue';
+import { inView } from "motion";
+import type { ElementOrSelector } from "motion";
+import { defineProps, ref, useTemplateRef, onMounted, onUnmounted } from "vue";
 
+const isInView: globalThis.Ref<boolean, boolean> = ref(false);
+const container: any = useTemplateRef("container");
 const props = defineProps({
   title: {
     type: String,
-    default: 'Default Title',
+    default: "Default Title",
   },
   classes: {
     type: String,
-    default: 'w-full relative',
+    default: "w-full relative",
   },
   font_size: {
     type: String,
-    default: 'text-[10vw]',
+    default: "text-[10vw]",
   },
 });
+const titleArr = props.title.split(" ");
+let stopViewTracking: any;
 
-const titleArr: string[] = props.title.split(''); // Type titleArr as string[]
+onMounted(() => {
+  stopViewTracking = inView(container.value, () => {
+    isInView.value = true
 
-async function onEnter(el: Element, onComplete: () => void): Promise<void> {
-  const sequence: AnimationSequence = [
-    [el, { opacity: 1 }, { duration: 0.5 }], // Fade in the h2
-    [el.querySelectorAll('span'), { y: 0, opacity: 1 }, { duration: 0.8 }], // Animate spans up
-  ];
+    return () => {
+      isInView.value = false
+    }
+  })
+})
+  
+onUnmounted(() => stopViewTracking())
 
-  await animate(sequence);
-  onComplete();
-}
 </script>
 
 <template>
-  <div :class="classes">
-    <Transition :css="false" @enter="onEnter">
-      <h2
-        :class="`text-white ${font_size} font-black uppercase block text-center opacity-0`"
+  <div ref="container" :class="classes">
+    <h2
+      :class="`text-white ${font_size} font-black uppercase block text-center`"
+    >
+      <span
+        v-for="(word, index) in titleArr"
+        :key="index"
+        :class="`inline-block overflow-hidden text-white mr-4`"
       >
         <span
-          v-for="(word, index) in titleArr"
-          :key="index"
-          :class="`inline-block translate-y-[100px] opacity-0 ${
-            index % 2 === 0 ? 'text-rose-600' : 'text-white'
+          :class="`inline-block tranistion-all duration-700 ${
+            isInView
+              ? 'translate-y-[0px] opacity-1'
+              : 'translate-y-[100px] opacity-0'
           }`"
+          :style="{
+            transitionDelay: `${index * 0.05}s`,
+            WebkitTransitionDelay: `${index * 0.05}s`
+          }"
         >
           {{ word }}
         </span>
-      </h2>
-    </Transition>
+      </span>
+    </h2>
   </div>
 </template>
