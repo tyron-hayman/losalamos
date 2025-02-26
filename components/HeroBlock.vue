@@ -51,11 +51,13 @@ const openMovie = (event: MouseEvent, id: string) => {
       class="h-[90vh] w-full flex items-center justify-center"
     >
       <div>
-        <AnimatedHeader :title="pageData.title" />
+        <h2 :class="`text-white text-[10vw] font-black uppercase block text-center`">
+          <AnimatedHeader :title="pageData.title" />
+        </h2>
         <h3
           class="text-white text-4xl leading-5xl font-normal block text-center mt-10"
         >
-          {{ pageData.tagline }}
+          <AnimatedHeader :title="pageData.tagline" />
         </h3>
       </div>
     </div>
@@ -75,7 +77,7 @@ const openMovie = (event: MouseEvent, id: string) => {
         v-for="block in pageData.post"
         :key="block?._id"
       >
-        <h4 class="text-white text-4xl md:text-9xl font-black uppercase block text-center">
+        <h4 @click="(event) => openMovie(event, block?._id)" class="text-white cursor-pointer text-4xl md:text-9xl font-black uppercase block text-center">
           {{ block?.title }}
         </h4>
         <div class="block w-full flex items-center justify-center my-20">
