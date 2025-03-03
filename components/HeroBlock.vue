@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import type { SanityDocument } from "@sanity/client";
+import type { PageData } from "../types";
 import imageUrlBuilder from "@sanity/image-url";
 import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import AnimatedHeader from "./AnimatedHeader.vue";
 
-const pageData = useState<any>();
-const today = useState<any>();
+const pageData = useState<PageData | null>('pageData', () => null);
 
 await callOnce(async () => {
   const POSTS_QUERY = groq`*[_type == "page" && _id == "singleton-homepage"][0] {
@@ -28,9 +27,8 @@ await callOnce(async () => {
         aboutSection
       }`;
 
-  const { data, error } = await useSanityQuery<SanityDocument[]>(POSTS_QUERY);
-  pageData.value = data;
-  today.value = new Date();
+  const { data, error } = await useSanityQuery<PageData>(POSTS_QUERY);
+  pageData.value = data.value;
 });
 
 const { projectId, dataset } = useSanity().client.config();
@@ -65,16 +63,16 @@ const openMovie = (event: MouseEvent, id: string) => {
       <h3
         class="text-white text-3xl leading-relaxed font-black uppercase block text-center"
       >
-        {{ pageData.subtitle }}
+        {{ pageData?.subtitle }}
       </h3>
       <p
         class="text-white text-lg py-2 my-4 border-y border-white/20 border-solid block w-[200px] mx-auto text-center"
       >
-        {{ pageData.date }}
+        {{ pageData?.date }}
       </p>
       <div
-        v-if="pageData.post.length > 0"
-        v-for="block in pageData.post"
+        v-if="pageData!.post.length > 0"
+        v-for="block in pageData?.post"
         :key="block?._id"
       >
         <h4 @click="(event) => openMovie(event, block?._id)" class="text-white cursor-pointer text-4xl md:text-9xl font-black uppercase block text-center">
