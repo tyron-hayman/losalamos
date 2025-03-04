@@ -26,4 +26,11 @@ interface PageData extends SanityDocument {
   aboutSection: any;
 }
 
-export type { Director, Post, PageData };
+interface GemResponses {
+  position: string,
+  color: string,
+  width: string,
+  response: string
+}
+
+export type { Director, Post, PageData, GemResponses };

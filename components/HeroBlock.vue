@@ -4,7 +4,7 @@ import imageUrlBuilder from "@sanity/image-url";
 import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import AnimatedHeader from "./AnimatedHeader.vue";
 
-const pageData = useState<PageData | null>('pageData', () => null);
+const pageData = useState<PageData | null>("pageData", () => null);
 
 await callOnce(async () => {
   const POSTS_QUERY = groq`*[_type == "page" && _id == "singleton-homepage"][0] {
@@ -49,7 +49,9 @@ const openMovie = (event: MouseEvent, id: string) => {
       class="h-[90vh] w-full flex items-center justify-center"
     >
       <div>
-        <h2 :class="`text-white text-[10vw] font-black uppercase block text-center`">
+        <h2
+          :class="`text-white text-[10vw] font-black uppercase block text-center`"
+        >
           <AnimatedHeader :title="pageData.title" />
         </h2>
         <h3
@@ -75,7 +77,10 @@ const openMovie = (event: MouseEvent, id: string) => {
         v-for="block in pageData?.post"
         :key="block?._id"
       >
-        <h4 @click="(event) => openMovie(event, block?._id)" class="text-white cursor-pointer text-4xl md:text-9xl font-black uppercase block text-center">
+        <h4
+          @click="(event) => openMovie(event, block?._id)"
+          class="text-white cursor-pointer text-4xl md:text-9xl font-black uppercase block text-center"
+        >
           {{ block?.title }}
         </h4>
         <div class="block w-full flex items-center justify-center my-20">
