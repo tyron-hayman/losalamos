@@ -1,14 +1,17 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Bebas_Neue, Figtree } from "next/font/google";
 import "./globals.css";
+import "./styles/main.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const bebas_neue = Bebas_Neue({
+  weight: "400",
+  variable: "--font-bebas_neue",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const figtree = Figtree({
+  weight: ["300", "400", "600", "900"],
+  variable: "--font-figtree-mono",
   subsets: ["latin"],
 });
 
@@ -25,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${bebas_neue.variable} ${figtree.variable} antialiased`}
       >
         {children}
       </body>
