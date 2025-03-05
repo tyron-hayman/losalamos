@@ -1,4 +1,6 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## LOS4LAMOS
+
+Discover the art of visual storytelling with our site, where we showcase the most breathtaking cinematography from film history. Explore stunning compositions, masterful lighting, and innovative camera work that define cinematic excellence. Powered by AI, our site provides detailed insights into each film’s aesthetic, techniques, and creative minds, offering a rich and immersive experience for cinephiles and filmmakers alike.
 
 ## Getting Started
 
