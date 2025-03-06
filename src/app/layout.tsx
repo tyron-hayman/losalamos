@@ -32,7 +32,7 @@ export default function RootLayout({
       <body
         className={`${bebas_neue.variable} ${figtree.variable} antialiased`}
       >
-        <MainNav />
+        <MainNav title="Los4lamos" />
         {children}
       </body>
     </html>
